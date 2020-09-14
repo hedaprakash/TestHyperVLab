@@ -10,7 +10,6 @@ $vhdTargetFolderVHDNameWithoutDriveLetter = $vhdTargetFolderVHDName.Substring(3)
 
 
 #use diskmgmt.msc to configure VHD disk
-mkdir "C:\BootVHD\w10Demo"
 
 $FindWindowsVersion= "$installWindowsImageFile –WIM '" + $windowsSourceFolder + "\sources\install.wim'"
 invoke-expression $FindWindowsVersion
