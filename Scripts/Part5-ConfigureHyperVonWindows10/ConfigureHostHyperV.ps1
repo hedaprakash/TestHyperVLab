@@ -1,5 +1,9 @@
 ﻿exit
+# Backup VHD before continuing with next steps
+
 #Save powershell to taskbar
+
+# Change Power options
 
 Rename-Computer w10demo
 
@@ -49,6 +53,8 @@ Set-VMhost -EnableEnhancedSessionMode $TRUE
 Get-NetAdapter
 Get-NetAdapter |?{$_.Status -eq "Up"}
 
+Restart-Computer 
+
 
 New-VMSwitch -Name lan10 -SwitchType Internal -Notes "lan10 network"
 New-VMSwitch -Name lan20 -SwitchType Internal -Notes "lan20 network"
@@ -66,17 +72,17 @@ Get-NetAdapter |?{$_.Status -eq "Up"}| Sort-Object -Property Virtual,InterfaceDe
 Disable-NetAdapterBinding -Name "*lan*" –ComponentID ms_tcpip6
 
 #Setup Lan10 with right IP
-Get-NetIPAddress -InterfaceIndex 61
-New-NetIPAddress -InterfaceIndex 61 -IPAddress 10.10.10.3 -PrefixLength 24
+Get-NetIPAddress -InterfaceIndex 69
+New-NetIPAddress -InterfaceIndex 69 -IPAddress 10.10.10.3 -PrefixLength 24
 
 #Setup Lan20 with right IP
 Get-NetAdapter |?{$_.Status -eq "Up"}| Sort-Object -Property Virtual,InterfaceDescription | select name,ifindex
-Get-NetIPAddress -InterfaceIndex 71
-New-NetIPAddress -InterfaceIndex 71 -IPAddress 20.20.20.3 -PrefixLength 24
-Get-NetIPAddress -InterfaceIndex 71
+Get-NetIPAddress -InterfaceIndex 75
+New-NetIPAddress -InterfaceIndex 75 -IPAddress 20.20.20.3 -PrefixLength 24
+Get-NetIPAddress -InterfaceIndex 75
 
 # lanNet
-Get-NetIPAddress -InterfaceIndex 79
+Get-NetIPAddress -InterfaceIndex 62
 
 Restart-Computer 
 
