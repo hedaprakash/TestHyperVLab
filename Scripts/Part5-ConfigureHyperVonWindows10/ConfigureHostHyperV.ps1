@@ -53,12 +53,15 @@ Set-VMhost -EnableEnhancedSessionMode $TRUE
 Get-NetAdapter
 Get-NetAdapter |?{$_.Status -eq "Up"}
 
-Restart-Computer 
-
+Get-NetAdapter | Where-Object -Property Name -Like vEthernet* | Disable-NetAdapter
 
 New-VMSwitch -Name lan10 -SwitchType Internal -Notes "lan10 network"
 New-VMSwitch -Name lan20 -SwitchType Internal -Notes "lan20 network"
 New-VMSwitch -Name lanNet -NetAdapterName (Get-NetAdapter |?{$_.Status -eq "Up" -and !$_.Virtual}).Name -Notes "lanNet"
+
+#Remove-VMSwitch "lan10" -Force
+#Remove-VMSwitch "lan20" -Force
+#Remove-VMSwitch "lanNet" -Force
 
 Get-NetAdapter |?{$_.Status -eq "Up"}| Sort-Object -Property Virtual,InterfaceDescription
 
@@ -72,17 +75,17 @@ Get-NetAdapter |?{$_.Status -eq "Up"}| Sort-Object -Property Virtual,InterfaceDe
 Disable-NetAdapterBinding -Name "*lan*" –ComponentID ms_tcpip6
 
 #Setup Lan10 with right IP
-Get-NetIPAddress -InterfaceIndex 69
-New-NetIPAddress -InterfaceIndex 69 -IPAddress 10.10.10.3 -PrefixLength 24
+Get-NetIPAddress -InterfaceIndex 60
+New-NetIPAddress -InterfaceIndex 60 -IPAddress 10.10.10.3 -PrefixLength 24
 
 #Setup Lan20 with right IP
 Get-NetAdapter |?{$_.Status -eq "Up"}| Sort-Object -Property Virtual,InterfaceDescription | select name,ifindex
-Get-NetIPAddress -InterfaceIndex 75
-New-NetIPAddress -InterfaceIndex 75 -IPAddress 20.20.20.3 -PrefixLength 24
-Get-NetIPAddress -InterfaceIndex 75
+Get-NetIPAddress -InterfaceIndex 70
+New-NetIPAddress -InterfaceIndex 70 -IPAddress 20.20.20.3 -PrefixLength 24
+Get-NetIPAddress -InterfaceIndex 70
 
 # lanNet
-Get-NetIPAddress -InterfaceIndex 62
+Get-NetIPAddress -InterfaceIndex 78
 
 Restart-Computer 
 
