@@ -1,4 +1,6 @@
-﻿$unattenndedbase=@"
+﻿exit
+
+$unattenndedbase=@"
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
       <settings pass="specialize">
@@ -31,11 +33,13 @@ $VMName ="vW19Parent"
 $AdministratorPassword="tttttt1!"
 $OSvhdx="C:\VHD\$($VMName).vhdx"
 
-mkdir C:\VHD
 
-#stop-vm $VMName -Force
-#remove-vm $VMName -Force
-#Remove-Item $OSvhdx
+<#
+stop-vm $VMName -Force
+remove-vm $VMName -Force
+Remove-Item $OSvhdx
+remove-item  C:\VHD -force
+#>
 
 $MountResult=New-VHD -Path $OSvhdx -Dynamic -SizeBytes 250GB | Mount-VHD -Passthru |Initialize-Disk  -PartitionStyle MBR -Passthru |New-Partition -AssignDriveLetter -UseMaximumSize |Format-Volume -FileSystem NTFS -Confirm:$false -Force
 
@@ -48,14 +52,15 @@ $unattennded | Out-File "$($MountResult.DriveLetter)`:\unattend.xml" -Encoding A
 Dismount-VHD -Path $OSvhdx -ErrorAction SilentlyContinue
 
 
-New-VM -Name "$($VMName)" -SwitchName lanNet -VHDPath "C:\VHD\$($VMName).vhdx"
+New-VM -Name "$($VMName)" -SwitchName lanNet -VHDPath $OSvhdx
 Set-VMProcessor -VMName "$($VMName)" -Count 4
-Set-VMMemory -VMName "$($VMName)" -DynamicMemoryEnabled $true -MinimumBytes 512MB -MaximumBytes 9048MB -Buffer 20  -StartupBytes 8048MB
+Set-VMMemory -VMName "$($VMName)" -DynamicMemoryEnabled $true -MinimumBytes 1024MB -MaximumBytes 8096MB -Buffer 20
 Enable-VMIntegrationService -Name "Guest Service Interface" -VMName $($VMName)
+Set-VM -VMName "$($VMName)" -AutomaticCheckpointsEnabled $False
 Set-VM -Name $VMName -AutomaticStartAction Nothing
 Set-VM -Name $VMName -AutomaticStopAction turnoff
-Set-VM -VMName "$($VMName)" -AutomaticCheckpointsEnabled $False
-Set-VMDvdDrive -VMName $VMName -Path "D:\SQLSetup_ALL\SQLBinaries\windows server 2019_June20\en_windows_server_2019_updated_june_2020_x64_dvd_7757177c.iso"
+Set-VMDvdDrive -VMName $VMName -Path "C:\SQLSetup\SQLBinaries\windows server 2019_June20\en_windows_server_2019_updated_june_2020_x64_dvd_7757177c.iso"
+
 
 
 Start-VM  "$($VMName)"
