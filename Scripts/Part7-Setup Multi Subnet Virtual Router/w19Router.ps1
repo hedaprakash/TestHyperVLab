@@ -84,7 +84,7 @@ Get-NetAdapter
 
 hostname
 
-Stop-Computer
+Stop-Computer -force  
 
 
 exit
@@ -120,7 +120,7 @@ Get-NetIPAddress -InterfaceIndex $Networkinterface
 
 Get-NetAdapter
 
-Stop-Computer
+Stop-Computer  -force  
 
 exit
 
