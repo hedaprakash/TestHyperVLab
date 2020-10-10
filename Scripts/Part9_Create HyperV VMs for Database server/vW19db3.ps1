@@ -66,8 +66,8 @@ Enter-PSSession -vmName $vmname -Credential $credential
 Get-WmiObject Win32_ComputerSystem
 whoami
 
-powershell D:\SQLSetup\Scripts\InstallSQL\InstallSQL.ps1 -SQLStartupAccount sqlfeatures\hvadmin -SQLStartupAccountPassword tttttt1! -SAPassword Sequoia2012#! -Product SQLFeatures -SQLSYSADMINACCOUNTS "sqlfeatures\SQLDBA" -MemLimit 4000 -AllocateCPU 2
+Add-WindowsFeature -Name Failover-Clustering –IncludeManagementTools
 
-Restart-Computer 
+start-sleep -s 30
 
-exit
+Restart-Computer -Force

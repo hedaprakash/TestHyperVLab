@@ -11,7 +11,7 @@ Enter-PSSession -vmName $vmname -Credential $credential #-Authentication Credssp
 
 
 Get-NetAdapter
-$NewSwitchName="LanNt"
+$NewSwitchName="Lan10"
 $Networkinterface=Get-NetAdapter  | Where-Object {$_.name  -notMatch "lan"} | Select-Object -ExpandProperty ifIndex
 $CurrentSwitchName=Get-NetAdapter  | Where-Object {$_.name  -notMatch "lan"} | Select-Object -ExpandProperty name
 $DefaultGateway = "10.10.10.1"
@@ -68,8 +68,10 @@ whoami
 Add-WindowsFeature -Name Failover-Clustering –IncludeManagementTools
 
 mkdir c:\temp\pslogs
-D:\SQLSetup\SQLBinaries\SQlTools\SSMS\Latest\SSMS-Setup-ENU.exe   /Install /passive /FEATURES=Adv_SSMS  /norestart /log c:\temp\pslogs\VW19DB1_SSMSLogs.log /IACCEPTSQLSERVERLICENSETERMS
+D:\SQLBinaries\SQlTools\SSMS\SSMS-Setup-ENU.exe   /Install /passive /FEATURES=Adv_SSMS  /norestart /log c:\temp\pslogs\VW19DB1_SSMSLogs.log /IACCEPTSQLSERVERLICENSETERMS
+
+start-sleep -s 600
  
-Restart-Computer 
+Restart-Computer  -force 
 
 exit

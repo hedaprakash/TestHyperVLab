@@ -53,7 +53,7 @@ nltest /dsgetdc:sqlfeatures.local /force
 $secretAdminpassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force
 $credential = new-object -typename System.Management.Automation.PSCredential -argumentlist $Adminaccount, $secretAdminpassword
 Add-Computer -DomainName sqlfeatures.local -Credential $credential 
-Restart-Computer
+Restart-Computer 
 
 $vmname="vW19db1"
 [string] $Adminaccount="sqlfeatures\hvadmin"
@@ -65,7 +65,9 @@ Enter-PSSession -vmName $vmname -Credential $credential
 Get-WmiObject Win32_ComputerSystem
 whoami
 
-powershell D:\SQLSetup\Scripts\InstallSQL\InstallSQL.ps1 -SQLStartupAccount sqlfeatures\hvadmin -SQLStartupAccountPassword tttttt1! -SAPassword Sequoia2012#! -Product SQLFeatures -SQLSYSADMINACCOUNTS "sqlfeatures\SQLDBA" -MemLimit 4000 -AllocateCPU 2
+Add-WindowsFeature -Name Failover-Clustering –IncludeManagementTools
+
+start-sleep -s 30
 
 Restart-Computer -Force
 
