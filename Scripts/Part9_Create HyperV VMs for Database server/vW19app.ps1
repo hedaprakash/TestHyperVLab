@@ -71,6 +71,9 @@ mkdir c:\temp\pslogs
 D:\SQLBinaries\SQlTools\SSMS\SSMS-Setup-ENU.exe   /Install /passive /FEATURES=Adv_SSMS  /norestart /log c:\temp\pslogs\VW19DB1_SSMSLogs.log /IACCEPTSQLSERVERLICENSETERMS
 
 start-sleep -s 600
+
+# Enable powershell Invoke-Sqlcmd
+Install-Module -Name SqlServer
  
 Restart-Computer  -force 
 

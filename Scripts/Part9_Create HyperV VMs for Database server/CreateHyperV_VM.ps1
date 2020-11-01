@@ -52,7 +52,7 @@ Set-VMProcessor -VMName "$($VMName)" -Count 1
 Set-VMMemory -VMName "$($VMName)" -DynamicMemoryEnabled $true -MinimumBytes 512MB -MaximumBytes 4096MB -Buffer 20  -StartupBytes 2048MB
 Enable-VMIntegrationService -Name "Guest Service Interface" -VMName $($VMName)
 Set-VM -VMName "$($VMName)" -AutomaticCheckpointsEnabled $False
-Set-VMDvdDrive -VMName $VMName -Path "D:\SQLSetup.iso"
+Set-VMDvdDrive -VMName $VMName -Path "C:\SQLSetup.iso"
 Set-VM -Name $VMName -AutomaticStartAction Nothing
 Set-VM -Name $VMName -AutomaticStopAction turnoff
 
