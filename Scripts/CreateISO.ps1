@@ -93,7 +93,7 @@ try{
 Catch{"Check why error while detaching ISO"}
 
 $Sourcefolder = "C:\SQLSetup"
-$isoPath="C:\SQLSetup.ISO"
+$isoPath="D:\SQLSetup.ISO"
 
 #Delete if ISO File exists
 if((test-path $isoPath)){remove-item $isoPath -Force}
